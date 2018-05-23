@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace BondClockin
 {
-    public partial class Service1 : ServiceBase
+    public partial class BondClockIn : ServiceBase
     {
 
         int SessionCheckTime = Convert.ToInt32(50);
 
-        public Service1()
+        public BondClockIn()
         {
             InitializeComponent();
             this.CanHandleSessionChangeEvent = true;
@@ -25,40 +25,28 @@ namespace BondClockin
 
         protected override void OnStart(string[] args)
         {
-            var slackClient = new SlackClient("https://hooks.slack.com/services/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");
-            var slackMessage = new SlackMessage
-            {
-                Text = "Service Started"
-            };
-            slackClient.Post(slackMessage);
+            Slackwrapper slackwrapper = new Slackwrapper();
+            slackwrapper.sendslack("Session Start " + DateTime.Now);
         }
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
         {
+
+            Slackwrapper slackwrapper = new Slackwrapper();
+
             switch (changeDescription.Reason)
             {
                 case SessionChangeReason.SessionLogon:
-                    Debug.WriteLine(changeDescription.SessionId + " logon");
+                    slackwrapper.sendslack("Session Logon " + DateTime.Now + " for user " + Environment.UserName);
                     break;
                 case SessionChangeReason.SessionLogoff:
-                    Debug.WriteLine(changeDescription.SessionId + " logoff");
+                    slackwrapper.sendslack("Session Logoff " + DateTime.Now + " for user " + Environment.UserName);
                     break;
                 case SessionChangeReason.SessionLock:
-                    var slackClient = new SlackClient("https://hooks.slack.com/services/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");
-                    var slackMessage = new SlackMessage
-                    {
-                        Text = "Session Locked"
-                    };
-                    slackClient.Post(slackMessage);
-                    //Debug.WriteLine(changeDescription.SessionId + " lock");
+                    slackwrapper.sendslack("Session Locked " + DateTime.Now + " for user " + Environment.UserName);
                     break;
                 case SessionChangeReason.SessionUnlock:
-                    var slackClient1 = new SlackClient("https://hooks.slack.com/services/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");
-                    var slackMessage1 = new SlackMessage
-                    {
-                        Text = "Session unlocked"
-                    };
-                    //Debug.WriteLine(changeDescription.SessionId + " unlock");
+                    slackwrapper.sendslack("Session Unlocked " + DateTime.Now + " for user " + Environment.UserName);
                     break;
             }
 
@@ -68,12 +56,8 @@ namespace BondClockin
 
         protected override void OnStop()
         {
-            var slackClient = new SlackClient("https://hooks.slack.com/services/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");
-            var slackMessage = new SlackMessage
-            {
-                Text = "Service Stopped"
-            };
-            slackClient.Post(slackMessage);
+            Slackwrapper slackwrapper = new Slackwrapper();
+            slackwrapper.sendslack("Service Stop " + DateTime.Now);
         }
     }
 }
