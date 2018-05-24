@@ -66,6 +66,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Slackwrapper.cs" />
+    <Compile Include="WebCheck.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using Slack.Webhooks;
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +11,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace BondClockin
 {
@@ -27,6 +30,33 @@ namespace BondClockin
         {
             Slackwrapper slackwrapper = new Slackwrapper();
             slackwrapper.sendslack("Session Start " + DateTime.Now);
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 500;//180000;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
+            timer.Start();
+        }
+
+        public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
+        {
+            WebCheck check = new WebCheck();
+            try
+            {
+                check.makeCheck("https://www.trollandtoad.com");
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            try
+            {
+                check.makeCheck("https://service.trollandtoad.com");
+            }
+            
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
