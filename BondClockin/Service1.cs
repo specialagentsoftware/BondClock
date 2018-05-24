@@ -31,7 +31,7 @@ namespace BondClockin
             Slackwrapper slackwrapper = new Slackwrapper();
             slackwrapper.sendslack("Session Start " + DateTime.Now);
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 500;//180000;
+            timer.Interval = 180000;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
             timer.Start();
         }
@@ -45,7 +45,9 @@ namespace BondClockin
             }
             catch(Exception ex)
             {
+                File.AppendAllText(@"C:\users\public\documents\check.txt", ex.Message);
                 throw ex;
+
             }
 
             try
@@ -55,6 +57,7 @@ namespace BondClockin
             
             catch(Exception ex)
             {
+                File.AppendAllText(@"C:\users\public\documents\check.txt", ex.Message);
                 throw ex;
             }
         }
