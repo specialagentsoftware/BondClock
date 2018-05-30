@@ -1,23 +1,12 @@
-﻿using Microsoft.Win32;
-using Slack.Webhooks;
+﻿using Nancy.Hosting.Self;
 using System;
-using System.Net;
-using System.Net.Http;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace BondClockin
 {
     public partial class BondClockIn : ServiceBase
     {
-
+        NancyHost host = new NancyHost(new Uri("http://localhost:8888"));
         int SessionCheckTime = Convert.ToInt32(50);
 
         public BondClockIn()
@@ -30,6 +19,9 @@ namespace BondClockin
         {
             Slackwrapper slackwrapper = new Slackwrapper();
             slackwrapper.sendslack("Session Start " + DateTime.Now);
+
+            host.Start();
+
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 180000;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
@@ -50,8 +42,9 @@ namespace BondClockin
 
             }
 
-            try
+            if (Environment.MachineName.Contains("trollandtoad.local"))
             {
+<<<<<<< HEAD:BondClockin/Service1.cs
                 check.makeCheck("https://service.trollandtoad.com");
             }
             
@@ -59,6 +52,17 @@ namespace BondClockin
             {
                 File.AppendAllText(@"C:\users\public\documents\check.txt", ex.Message);
                 throw ex;
+=======
+                try
+                {
+                    check.makeCheck("https://service.trollandtoad.com");
+                }
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+>>>>>>> 6594b086daee3b3d5738591587ae39b37dc78a6e:BondClockin/BondClockIn.cs
             }
         }
 
@@ -91,6 +95,7 @@ namespace BondClockin
         {
             Slackwrapper slackwrapper = new Slackwrapper();
             slackwrapper.sendslack("Service Stop " + DateTime.Now);
+            host.Stop();
         }
     }
 }
