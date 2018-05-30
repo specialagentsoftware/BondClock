@@ -16,7 +16,7 @@ namespace BondClockin
             {
                 string ip = Request.UserHostAddress;
                 RequestHeaders headerinfo = Request.Headers;
-                return "HI, WebServer hosted by windows service here." + Environment.NewLine + "You can call me Rodarigo." + Environment.NewLine + "I see you are making the request from :: " + ip + Environment.NewLine + " :: Header as follows :: " + headerinfo.UserAgent;
+                return "HI, WebServer hosted by windows service here. <br> You can call me Rodarigo. <br> I see you are making the request from :: " + ip + "<br> :: User Agent ::<br> " + headerinfo.UserAgent;
                 
             };
         }
