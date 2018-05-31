@@ -12,7 +12,7 @@ namespace BondClockin
     {
         public NancyMod()
         {
-            Get["/"] = _ =>
+            Get["/dump"] = _ =>
             {
                 string ip = Request.UserHostAddress;
                 RequestHeaders headerinfo = Request.Headers;
@@ -41,6 +41,11 @@ namespace BondClockin
                 "<li>User Agent - " + headerinfo.UserAgent + "</li>" +
                 "<li>Values- " + headerinfo.Values + "</li>" +
                 "</ul>";
+            };
+
+            Get["/"] = _ =>
+            {
+                return View["game.sshtml"];
             };
         }
     }
