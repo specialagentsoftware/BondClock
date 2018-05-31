@@ -12,7 +12,7 @@ namespace BondClockin
     {
         public bool makeCheck(string address)
         {
-            BondClockDataSetTableAdapters.WebStatusTableAdapter tableadapter = new BondClockDataSetTableAdapters.WebStatusTableAdapter();
+            //BondClockDataSetTableAdapters.WebStatusTableAdapter tableadapter = new BondClockDataSetTableAdapters.WebStatusTableAdapter();
             Slackwrapper slackwrapper = new Slackwrapper();
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
             {
@@ -24,17 +24,17 @@ namespace BondClockin
 
                 if (statuscode == "OK")
                 {
-                    tableadapter.Insert(address,DateTime.Now,"OK");
+                    //tableadapter.Insert(address,DateTime.Now,"OK");
 
                     if (result.Contains("Maintenance"))
                     {
                         slackwrapper.sendslack(address + " is in Maintenance Mode " + Environment.NewLine);
-                        tableadapter.Insert(address, DateTime.Now, "Maintenance Mode");
+                        //tableadapter.Insert(address, DateTime.Now, "Maintenance Mode");
                     }
                 }
                 else
                 {
-                    tableadapter.Insert(address, DateTime.Now, "Not returning ok. Not in Maintenance");
+                    //tableadapter.Insert(address, DateTime.Now, "Not returning ok. Not in Maintenance");
                     slackwrapper.sendslack(address + " is not returning a 200 ok. " + Environment.NewLine);
                 }
             }

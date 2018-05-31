@@ -62,22 +62,41 @@ namespace BondClockin
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
         {
-
+            TimeSpan morningstartTime = new TimeSpan(7, 0, 0);
+            TimeSpan morningendTime = new TimeSpan(9, 0, 0);
+            TimeSpan eveningstartTime = new TimeSpan(16, 0, 0);
+            TimeSpan eveningendTime = new TimeSpan(18, 0, 0);
             Slackwrapper slackwrapper = new Slackwrapper();
 
             switch (changeDescription.Reason)
             {
                 case SessionChangeReason.SessionLogon:
                     slackwrapper.sendslack("Session Logon " + DateTime.Now + " for user " + Environment.UserName);
-                    break;
-                case SessionChangeReason.SessionLogoff:
+                    if (DateTime.Now.TimeOfDay >= morningstartTime && DateTime.Now.TimeOfDay <= morningendTime)
+               {
+                        slackwrapper.sendslack("Did you clock in?");
+               }
+               break;
+               case SessionChangeReason.SessionLogoff:
                     slackwrapper.sendslack("Session Logoff " + DateTime.Now + " for user " + Environment.UserName);
-                    break;
-                case SessionChangeReason.SessionLock:
+                   if (DateTime.Now.TimeOfDay >= eveningstartTime && DateTime.Now.TimeOfDay <= eveningendTime)
+              {
+                        slackwrapper.sendslack("Did you clock out?");
+              }
+              break;
+             case SessionChangeReason.SessionLock:
                     slackwrapper.sendslack("Session Locked " + DateTime.Now + " for user " + Environment.UserName);
+                   if (DateTime.Now.TimeOfDay >= eveningstartTime && DateTime.Now.TimeOfDay <= eveningendTime)
+             {
+                        slackwrapper.sendslack("Did you clock out?");
+             }
                     break;
-                case SessionChangeReason.SessionUnlock:
+             case SessionChangeReason.SessionUnlock:
                     slackwrapper.sendslack("Session Unlocked " + DateTime.Now + " for user " + Environment.UserName);
+                   if (DateTime.Now.TimeOfDay >= morningstartTime && DateTime.Now.TimeOfDay <= morningendTime)
+            {
+                        slackwrapper.sendslack("Did you clock in?");
+            }
                     break;
             }
 
