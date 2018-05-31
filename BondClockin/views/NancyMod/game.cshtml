@@ -1,7 +1,5 @@
-﻿        <ul>
-            <li>@Model.id</li>
-            <li>@Model.ServerChecked</li>
-            <li>@Model.TimeChecked</li>
-            <li>@Model.Status</li>
-        </ul>
+﻿@foreach (string value in @Model.Values)
+{
+    @value;
+}
 

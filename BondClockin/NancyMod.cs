@@ -11,6 +11,8 @@ namespace BondClockin
     public class NancyMod : NancyModule
 
     {
+        public Dictionary<String, String> ModelArray = new Dictionary<string, string>();
+
         public NancyMod()
         {
             Get["/dump"] = _ =>
@@ -46,9 +48,9 @@ namespace BondClockin
 
             Get["/"] = _ =>
             {
-                Dictionary<String, String> ModelArray;
                 BondClockDataSetTableAdapters.WebStatusTableAdapter tableadapter = new BondClockDataSetTableAdapters.WebStatusTableAdapter();
                 var WebStatus = tableadapter.GetData();
+                
                 foreach (DataRow row in WebStatus)
                 {
                     ModelArray.Add("id",row["id"].ToString());
