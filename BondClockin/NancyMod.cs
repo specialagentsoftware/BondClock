@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace BondClockin
 {
@@ -45,7 +46,17 @@ namespace BondClockin
 
             Get["/"] = _ =>
             {
-                return View["game.sshtml"];
+                Dictionary<String, String> ModelArray;
+                BondClockDataSetTableAdapters.WebStatusTableAdapter tableadapter = new BondClockDataSetTableAdapters.WebStatusTableAdapter();
+                var WebStatus = tableadapter.GetData();
+                foreach (DataRow row in WebStatus)
+                {
+                    ModelArray.Add("id",row["id"].ToString());
+                    ModelArray.Add("ServerChecked",row["ServerChecked"].ToString());
+                    ModelArray.Add("TimeChecked",row["TimeChecked"].ToString());
+                    ModelArray.Add("Status",row["Status"].ToString());
+                }
+                return View["game.cshtml", ModelArray];
             };
         }
     }
